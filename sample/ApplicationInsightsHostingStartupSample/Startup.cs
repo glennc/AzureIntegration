@@ -23,8 +23,6 @@ namespace IISSample
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
         {
-            loggerFactory.AddConsole(LogLevel.Debug);
-
             var logger = loggerFactory.CreateLogger("Requests");
 
             app.UseMvcWithDefaultRoute();
@@ -107,6 +105,10 @@ namespace IISSample
                 .Build();
 
             var host = new WebHostBuilder()
+                .ConfigureLogging((_, factory) =>
+                {
+                    factory.AddConsole();
+                })
                 .UseKestrel()
                 .UseStartup<Startup>()
                 .UseContentRoot(Directory.GetCurrentDirectory())
